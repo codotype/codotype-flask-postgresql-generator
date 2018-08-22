@@ -1,12 +1,9 @@
-const Generator = require('../util/generator')
-const FlaskAppBase = require('./flask_app_base')
-const FlaskRoutes = require('./flask_routes')
-const FlaskResource = require('./flask_resource')
+const { Generator } = require('codotype-generator')
 
-module.exports = class Flask extends Generator {
+module.exports = class FlaskApi extends Generator {
   async write () {
-    await this.composeWith(FlaskAppBase)
-    await this.composeWith(FlaskRoutes)
-    await this.composeWith(FlaskResource)    
+    await this.composeWith('./base')
+    await this.composeWith('./routes')
+    await this.composeWith('./resource')
   }
 }

@@ -28,22 +28,20 @@ class <%- schema.class_name %>ModelResource(MethodView):
         body = json.dumps({ 'message': 'Hi, this is from DELETE /<%- schema.identifier_plural %>/<%- schema.identifier %>_id' })
         return body, status
 
-<% for (let attr of schema.attributes) { -%>
-<% if (attr.datatype === 'RELATION') { -%>
-<% if (attr.datatypeOptions.relationType === 'BELONGS_TO') { -%>
-class <%- schema.class_name %>Related<%- attr.datatypeOptions.schema_class_name %>Resource(MethodView):
+<% schema.relations.forEach((rel) => { _%>
+<% if (rel.type === 'BELONGS_TO') { -%>
+class <%- schema.class_name %>Related<%- rel.schema.class_name %>Resource(MethodView):
     def get(self, <%- schema.identifier %>_id):
         status = 200
-        body = json.dumps({ 'message': 'Hi, this is from GET /<%- schema.identifier_plural %>/<%- schema.identifier %>_id/<%- attr.datatypeOptions.schema_identifier %>' })
+        body = json.dumps({ 'message': 'Hi, this is from GET /<%- schema.identifier_plural %>/<%- schema.identifier %>_id/<%- rel.schema.identifier %>' })
         return body, status
-        
-<% } else if (attr.datatypeOptions.relationType === 'HAS_MANY' || attr.datatypeOptions.relationType === 'OWNS_MANY') { -%>
-class <%- schema.class_name %>Related<%- attr.datatypeOptions.schema_class_name_plural %>Resource(MethodView):
+
+<% } else if (rel.type === 'HAS_MANY' || rel.type === 'OWNS_MANY') { -%>
+class <%- schema.class_name %>Related<%- rel.schema.class_name_plural %>Resource(MethodView):
     def get(self, <%- schema.identifier %>_id):
         status = 200
-        body = json.dumps({ 'message': 'Hi, this is from GET /<%- schema.identifier_plural %>/<%- schema.identifier %>_id/<%- attr.datatypeOptions.schema_identifier_plural %>' })
+        body = json.dumps({ 'message': 'Hi, this is from GET /<%- schema.identifier_plural %>/<%- schema.identifier %>_id/<%- rel.schema.identifier_plural %>' })
         return body, status
 
 <% } -%>
-<% } -%>
-<% } -%>
+<% }) -%>

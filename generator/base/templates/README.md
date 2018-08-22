@@ -1,6 +1,6 @@
-# blazeplate_flask
+# codotype_flask
 
-Blazeplate API server with Flask framework
+Codotype API server with Flask framework
 
 ## Prerequisites
 
