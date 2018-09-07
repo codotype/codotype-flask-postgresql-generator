@@ -1,0 +1,16 @@
+{
+  "id": "codotype-generator-python-flask",
+  "label": "Flask",
+  "icon": "devicon-python-plain",
+  "description": "Flask is a web framework for building server application with Python.",
+  "tech_tags": ["Python", "Flask", "PostgreSQL"],
+  "type_tags": ["API"],
+  "self_configuring": false,
+  "project_path": "flask_api",
+  "addons": [],
+  "global_options": [],
+  "model_options": [],
+  "github_url": "codotype/codotype-flask-postgresql-generator",
+  "version": "0.1.0",
+  "official": true
+}
