@@ -28,7 +28,7 @@ class <%- schema.class_name %>ModelResource(MethodView):
         body = json.dumps({ 'message': 'Hi, this is from DELETE /<%- schema.identifier_plural %>/<%- schema.identifier %>_id' })
         return body, status
 
-<% schema.relations.forEach((rel) => { _%>
+<%_ schema.relations.forEach((rel) => { _%>
 <% if (rel.type === 'BELONGS_TO') { -%>
 class <%- schema.class_name %>Related<%- rel.schema.class_name %>Resource(MethodView):
     def get(self, <%- schema.identifier %>_id):
