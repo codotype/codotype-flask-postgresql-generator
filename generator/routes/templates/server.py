@@ -3,7 +3,7 @@
 from flask import Flask
 from flask.views import MethodView
 import json
-<%_ app.schemas.forEach((schema) => { _%>
+<%_ blueprint.schemas.forEach((schema) => { _%>
 from resources.<%= schema.identifier_plural %> import *
 <%_ }) _%>
 
@@ -20,19 +20,18 @@ from resources.<%= schema.identifier_plural %> import *
 # Assign the Flask instance (a WSGI application) to the app variable.
 app = Flask(__name__)
 
-<% app.schemas.forEach((schema) => { -%>
+<%_ blueprint.schemas.forEach((schema) => { _%>
 # <%= schema.label_plural %> Routes
 app.add_url_rule('/api/<%- schema.identifier_plural %>', view_func=<%- schema.class_name %>CollectionResource.as_view('<%- schema.identifier_plural %>_collection_resource'), methods=['GET', 'POST'])
 app.add_url_rule('/api/<%- schema.identifier_plural %>/<<%- schema.identifier %>_id>', view_func=<%- schema.class_name %>ModelResource.as_view('<%- schema.identifier_plural %>_model_resource'), methods=['GET', 'PUT', 'DELETE'])
-<% schema.relations.forEach((rel) => { -%>
-<% if (rel.type === 'BELONGS_TO') { -%>
+<%_ schema.relations.forEach((rel) => { _%>
+<%_ if (rel.type === 'BELONGS_TO') { _%>
 app.add_url_rule('/api/<%- schema.identifier_plural %>/<<%- schema.identifier %>_id>/<%- rel.schema.identifier %>', view_func=<%- schema.class_name %>Related<%- rel.schema.class_name %>Resource.as_view('<%- schema.identifier %>_related_<%- rel.schema.identifier %>_resource'), methods=['GET'])
-<% } else if (rel.type === 'OWNS_MANY' || rel.type === 'HAS_MANY') { -%>
+<%_ } else if (rel.type === 'OWNS_MANY' || rel.type === 'HAS_MANY') { _%>
 app.add_url_rule('/api/<%- schema.identifier_plural %>/<<%- schema.identifier %>_id>/<%- rel.schema.identifier_plural %>', view_func=<%- schema.class_name %>Related<%- rel.schema.class_name_plural %>Resource.as_view('<%- schema.identifier %>_related_<%- rel.schema.identifier_plural %>_resource'), methods=['GET'])
-<% } -%>
-<% }) -%>
-
-<% }) -%>
+<%_ } _%>
+<%_ }) _%>
+<%_ }) _%>
 
 if __name__ == '__main__':
     app.run(debug=True)
