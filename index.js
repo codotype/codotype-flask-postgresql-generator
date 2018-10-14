@@ -1,15 +1,19 @@
 // TODO - this file should be moved into a test directory
 const CodotypeRuntime = require('@codotype/runtime')
+const buildConfiguration = require('@codotype/util/lib/buildConfiguration')
 
-// const app = require('codotype-generator/examples/todo-list.json')
-const app = require('@codotype/generator/examples/library.json')
+// const blueprint = require('@codotype/blueprints/lib/team-lists.json')
+// const blueprint = require('@codotype/blueprints/lib/textbook-library.json')
+const blueprint = require('@codotype/blueprints/lib/twitter.json')
 
 // Each stage can accept its own app - this is done to simplify challenges introduc
+// TODO - pull `generator_id` from codotype-meta.json, potentially refactor this approach?
+// TODO - ensure presence of valid configuration object
 const build = {
-  app: app,
+  blueprint: blueprint,
   stages: [{
     generator_id: 'codotype-generator-python-flask',
-    configuration: {} // TODO - this will be populated by the UI
+    configuration: buildConfiguration({ blueprint: blueprint, generator: require('./meta') })
   }]
 }
 
@@ -21,6 +25,6 @@ runtime.registerGenerator({ relative_path: './' })
 
 // Executes the build
 runtime.execute({ build })
-.then(() => {
-  console.log('TEST SUCCESSFUL')
-})
+  .then(() => {
+    console.log('TEST SUCCESSFUL')
+  })

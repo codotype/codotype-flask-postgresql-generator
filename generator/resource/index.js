@@ -3,7 +3,7 @@ const Generator = require('@codotype/generator')
 // // // //
 
 module.exports = class FlaskResource extends Generator {
-  async write ({ app }) {
+  async write ({ blueprint }) {
     const dest = 'resources/'
 
     // Ensures destination directory
@@ -16,12 +16,15 @@ module.exports = class FlaskResource extends Generator {
     )
 
     // Defines resources/{{schema.identifier_plural}}.py
-    app.schemas.forEach(async (schema) => {
+    for (let index = 0; index < blueprint.schemas.length; index++) {
+      const schema = blueprint.schemas[index];
+
       await this.copyTemplate(
         this.templatePath('resource.py'),
         this.destinationPath(dest + schema.identifier_plural + '.py'),
         { schema }
       )
-    })
+    }
+
   }
 }
