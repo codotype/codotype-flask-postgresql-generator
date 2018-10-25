@@ -33,12 +33,12 @@ class <%= schema.class_name %>CollectionResource():
                 <%_ schema.relations.forEach((rel) => { _%>
                 <%_  _%>
                 <%_  _%>
-                <%_ if (rel.type === 'BELONGS_TO') { _%>
+                <%_ if (rel.type === 'BELONGS_TO' || rel.type === 'HAS_ONE') { _%>
                 '<%= rel.alias.identifier %>_id': str(<%= schema.identifier %>.<%= rel.alias.identifier %>.id),
                 '<%= rel.alias.identifier %>': {
                     'id': str(<%= schema.identifier %>.<%= rel.alias.identifier %>.id),
                     '<%= rel.related_lead_attribute %>': str(<%= schema.identifier %>.<%= rel.alias.identifier %>.<%= rel.related_lead_attribute %>)
-                }
+                },
                 <%_ } else if (rel.type === 'HAS_MANY') { _%>
                 '<%= rel.alias.identifier %>_id': <%= schema.identifier %>.<%= rel.alias.identifier %>_id
                 <%_ } _%>
@@ -72,7 +72,7 @@ class <%= schema.class_name %>CollectionResource():
         <%_ schema.relations.forEach((rel) => { _%>
         <%_  _%>
         <%_  _%>
-        <%_ if (rel.type === 'BELONGS_TO') { _%>
+        <%_ if (rel.type === 'BELONGS_TO' || rel.type === 'HAS_ONE') { _%>
         <%= rel.alias.identifier %>_id = req.get_json('<%= rel.alias.identifier %>_id', dtype=str)
         <%_ } else if (rel.type === 'HAS_MANY') { _%>
         <%= rel.alias.identifier %>_ids = req.get_json('<%= rel.alias.identifier %>_id', dtype=float)
@@ -99,8 +99,8 @@ class <%= schema.class_name %>CollectionResource():
             <%_ schema.relations.forEach((rel) => { _%>
             <%_  _%>
             <%_  _%>
-            <%_ if (rel.type === 'BELONGS_TO') { _%>
-            <%= rel.alias.identifier %> = ObjectId(<%= rel.alias.identifier %>_id)
+            <%_ if (rel.type === 'BELONGS_TO' || rel.type === 'HAS_ONE') { _%>
+            <%= rel.alias.identifier %> = ObjectId(<%= rel.alias.identifier %>_id),
             <%_ } else if (rel.type === 'HAS_MANY') { _%>
             <%= rel.alias.identifier %>_ids = <%= rel.alias.identifier %>_ids
             <%_ } _%>
@@ -116,10 +116,10 @@ class <%= schema.class_name %>CollectionResource():
         resp.json = {
             'id': str(new<%= schema.class_name %>.id),
             <%_ schema.relations.forEach((rel) => { _%>
-            <%_ if (rel.type === 'BELONGS_TO') { _%>
-            '<%= rel.alias.identifier %>_id': <%= rel.alias.identifier %>_id
+            <%_ if (rel.type === 'BELONGS_TO' || rel.type === 'HAS_ONE') { _%>
+            '<%= rel.alias.identifier %>_id': <%= rel.alias.identifier %>_id,
             <%_ } else if (rel.type === 'HAS_MANY') { _%>
-            '<%= rel.alias.identifier %>_ids': <%= rel.alias.identifier %>_ids
+            '<%= rel.alias.identifier %>_ids': <%= rel.alias.identifier %>_ids,
             <%_ } _%>
             <%_ }) _%>
         }
@@ -151,12 +151,12 @@ class <%= schema.class_name %>ModelResource():
             <%_ schema.relations.forEach((rel) => { _%>
             <%_  _%>
             <%_  _%>
-            <%_ if (rel.type === 'BELONGS_TO') { _%>
+            <%_ if (rel.type === 'BELONGS_TO' || rel.type === 'HAS_ONE') { _%>
             '<%= rel.alias.identifier %>_id': str(<%= schema.identifier %>.<%= rel.alias.identifier %>.id),
             '<%= rel.alias.identifier %>': {
                 'id': str(<%= schema.identifier %>.<%= rel.alias.identifier %>.id),
                 '<%= rel.related_lead_attribute %>': str(<%= schema.identifier %>.<%= rel.alias.identifier %>.<%= rel.related_lead_attribute %>)
-            }
+            },
             <%_ } else if (rel.type === 'HAS_MANY') { _%>
             '<%= rel.alias.identifier %>_id': <%= schema.identifier %>.<%= rel.alias.identifier %>_id
             <%_ } _%>
@@ -180,11 +180,26 @@ class <%= schema.class_name %>ModelResource():
 
 <%_ schema.relations.forEach((rel) => { _%>
 <%_ if (rel.type === 'BELONGS_TO' || rel.type === 'HAS_ONE') { _%>
-# GET /api/<%= schema.identifier_plural %>/<%= schema.identifier %>_id/<%= rel.schema.identifier %>
+
+
+# GET /api/<%= schema.identifier_plural %>/<%= schema.identifier %>_id/<%= rel.alias.identifier %>
 class <%= schema.class_name %>Related<%= rel.alias.class_name %>Resource():
     def on_get(self, req, resp, <%= schema.identifier %>_id):
-        resp.json = { 'message': 'Hi, this is from GET /api/<%= schema.identifier_plural %>/<%= schema.identifier %>_id/<%= rel.schema.identifier %>' }
+
+        <%_ let relatedSchema = blueprint.schemas.find(s => s._id === rel.related_schema_id) _%>
+        <%= schema.identifier %> =  <%= schema.class_name %>Model.objects.get(id=<%= schema.identifier %>_id)
+        <%= rel.alias.identifier %> = {
+            'id': str(<%= schema.identifier %>.<%= rel.alias.identifier %>.id),
+            <%_ relatedSchema.attributes.forEach((attr) => { _%>
+            <%_ if (attr.datatype === "TEXT") { _%>
+            '<%= attr.identifier %>': str(<%= schema.identifier %>.<%= rel.alias.identifier %>.<%= attr.identifier %>),
+            <%_ } _%>
+            <%_ }) _%>
+        }
+
+        resp.json = <%= rel.alias.identifier %>
         resp.status = falcon.HTTP_200
+
 <%_ } else { _%>
 # GET /api/<%= schema.identifier_plural %>/<%= schema.identifier %>_id/<%= rel.schema.identifier_plural %>
 class <%= schema.class_name %>Related<%= rel.alias.class_name_plural %>Resource():
