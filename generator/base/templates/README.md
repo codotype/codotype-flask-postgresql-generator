@@ -5,15 +5,19 @@ Project Template for a high-performance RESTful web service in Python, using [fa
 
 ## Setup
 
-* Install [PyPy](http://pypy.org/) (or just use `Python 2.7`) and [MongoDB](https://www.mongodb.com/)
-* Check database credentials at `src/settings.py`
-* Install dependencies on a `virtualenv`:
+1. Install dependencies:
 
 ```
-virtualenv -p /usr/bin/pypy env
-source env/bin/activate
 pip install -r requirements.txt
 ```
+
+2. Start MongoDB Docker container:
+
+```
+docker-compose up -d
+```
+
+*Note:* this also starta a Mongo-Express Admin instance running at `localhost:8080`
 
 
 ## Run Development Server
