@@ -4,24 +4,22 @@ const Generator = require('@codotype/generator')
 
 module.exports = class FlaskResource extends Generator {
   async write ({ blueprint }) {
-    const dest = 'resources/'
+    const dest = 'src/resources/'
 
-    // Ensures destination directory
-    this.ensureDir(dest)
-
-    // Defines resources/__init__.py
+    // Copies models
     await this.copyTemplate(
-      this.templatePath('__init__.py'),
-      this.destinationPath(dest + '__init__.py')
+      this.templatePath('models.py'),
+      this.destinationPath('src/models.py')
     )
-
+        
     // Defines resources/{{schema.identifier_plural}}.py
+    
     for (let index = 0; index < blueprint.schemas.length; index++) {
       const schema = blueprint.schemas[index];
 
       await this.copyTemplate(
         this.templatePath('resource.py'),
-        this.destinationPath(dest + schema.identifier_plural + '.py'),
+        this.destinationPath(dest + schema.identifier + '.py'),
         { schema }
       )
     }
