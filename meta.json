@@ -6,7 +6,7 @@
   "tech_tags": ["Python", "Flask", "PostgreSQL"],
   "type_tags": ["API"],
   "self_configuring": false,
-  "project_path": "flask_api",
+  "project_path": "falcon_api",
   "addons": [],
   "global_options": [],
   "model_options": [],
