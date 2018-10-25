@@ -5,8 +5,8 @@ const Generator = require('@codotype/generator')
 module.exports = class FlaskRouter extends Generator {
   async write () {
     await this.copyTemplate(
-      this.templatePath('server.py'),
-      this.destinationPath('server.py')
+      this.templatePath('routes.py'),
+      this.destinationPath('src/routes.py')
     )
   }
 }
