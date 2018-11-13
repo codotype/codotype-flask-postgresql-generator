@@ -1,8 +1,6 @@
-const Generator = require('@codotype/generator')
 
-// // // //
-
-module.exports = class FlaskRouter extends Generator {
+module.exports = {
+  name: 'FalconRouter',
   async write () {
     function makeResources (schema){
       let resources = []
