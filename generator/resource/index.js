@@ -1,28 +1,16 @@
-const Generator = require('@codotype/generator')
 
-// // // //
-
-module.exports = class FlaskResource extends Generator {
+module.exports = {
+  name: 'FalconResources',
   async write ({ blueprint }) {
+    await this.renderComponent({ src: 'models.py', dest: 'src/models.py' })
+  },
+  async forEachSchema({ blueprint, configuration, schema }) {
     const dest = 'src/resources/'
 
-    // Copies models
     await this.copyTemplate(
-      this.templatePath('models.py'),
-      this.destinationPath('src/models.py')
+      this.templatePath('resource.py'),
+      this.destinationPath(dest + schema.identifier + '.py'),
+      { schema }
     )
-        
-    // Defines resources/{{schema.identifier_plural}}.py
-    
-    for (let index = 0; index < blueprint.schemas.length; index++) {
-      const schema = blueprint.schemas[index];
-
-      await this.copyTemplate(
-        this.templatePath('resource.py'),
-        this.destinationPath(dest + schema.identifier + '.py'),
-        { schema }
-      )
-    }
-
   }
 }

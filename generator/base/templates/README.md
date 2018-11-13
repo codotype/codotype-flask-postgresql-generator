@@ -1,7 +1,5 @@
-# REST API with Falcon, MongoDB and PyPy
-
-Project Template for a high-performance RESTful web service in Python, using [falcon-jsonify](https://github.com/AndreiRegiani/falcon-jsonify) middleware and [MongoEngine](https://github.com/MongoEngine/mongoengine) Object-Document-Mapper.
-
+# Python Falcon MongoDB REST API
+REST API in Python, Falcon, &amp; MongoDB
 
 ## Setup
 
@@ -17,7 +15,7 @@ pip install -r requirements.txt
 docker-compose up -d
 ```
 
-*Note:* this also starta a Mongo-Express Admin instance running at `localhost:8080`
+*Note:* this also starts a Mongo-Express Admin instance running at `localhost:8081`
 
 
 ## Run Development Server
@@ -25,17 +23,11 @@ docker-compose up -d
 ```
 ./run_server.sh
 ```
+
 Listening at [localhost:8000](http://localhost:8000). `Gunicorn` is used as WSGI HTTP Server.
 
-**Demo routes:**
-
-* `POST /api/example  {"email": "value"}` create an item
-* `GET  /api/example` return all items
-
-
-## Further Reading
-
-* [MongoEngine Docs](http://docs.mongoengine.org/)
-* [Falcon Docs](https://falcon.readthedocs.io/en/stable/)
-* [Gunicorn Docs](http://docs.gunicorn.org/en/stable/)
-* [About PyPy](http://pypy.org/features.html)
+## Built With
+- [MongoEngine](http://docs.mongoengine.org/)
+- [Falcon](https://falcon.readthedocs.io/en/stable/)
+- [Gunicorn](http://docs.gunicorn.org/en/stable/)
+- [Codotype](https://codotype.io)
