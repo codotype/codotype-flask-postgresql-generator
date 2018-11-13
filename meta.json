@@ -1,16 +1,17 @@
 {
-  "id": "codotype-generator-python-flask",
-  "label": "Flask",
-  "icon": "devicon-python-plain",
-  "description": "Flask is a web framework for building server application with Python.",
-  "tech_tags": ["Python", "Flask", "PostgreSQL"],
+  "id": "codotype-generator-python-falcon-mongodb",
+  "label": "Falcon REST API",
+  "icon": "https://raw.githubusercontent.com/codotype/codotype-python-falcon-mongodb-generator/master/python.png",
+  "description": "Generates REST APIs in Python, Falcon, and MongoDB",
+  "tech_tags": ["Python", "Falcon", "MongoDB", "Docker"],
   "type_tags": ["API"],
+  "experience": "Beginner",
   "self_configuring": false,
   "project_path": "falcon_api",
   "addons": [],
   "global_options": [],
   "model_options": [],
-  "github_url": "codotype/codotype-flask-postgresql-generator",
+  "github_url": "codotype/codotype-python-falcon-mongodb-generator",
   "version": "0.1.0",
   "official": true
 }

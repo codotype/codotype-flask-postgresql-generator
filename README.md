@@ -1,5 +1,5 @@
 # codotype-python-falcon-mongodb-generator
-Codotype Generator for REST APIs in Python, Falcon, &amp; MongoDB
+:snake: Codotype Generator for REST APIs in Python, Falcon, &amp; MongoDB
 
 This [Codotype](https://codotype.io) Generator builds Python REST APIs with Falcon, MongoDB, and Gunicorn
 
